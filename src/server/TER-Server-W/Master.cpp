@@ -106,7 +106,7 @@ int Master::Run()
     BigNumber seed1;
     seed1.SetRand(16 * 8);
 
-    sLog->outInfo(LOG_FILTER_WORLDSERVER, " (TER-Server-крови)");
+    sLog->outInfo(LOG_FILTER_WORLDSERVER, " (TER-Server)");
     sLog->outInfo(LOG_FILTER_WORLDSERVER, "<Ctrl-C> to stop.\n");
 
     sLog->outInfo(LOG_FILTER_WORLDSERVER, " ********    ********     ********");
@@ -117,7 +117,7 @@ int Master::Run()
     sLog->outInfo(LOG_FILTER_WORLDSERVER, "   ****      ******       ***     ***");
     sLog->outInfo(LOG_FILTER_WORLDSERVER, "   ----      *******      ****    ***");
     sLog->outInfo(LOG_FILTER_WORLDSERVER, "                       TER884 C O R E   ");
-    sLog->outInfo(LOG_FILTER_WORLDSERVER, "TER-Server-крови                     ");
+    sLog->outInfo(LOG_FILTER_WORLDSERVER, "TER-Server                    ");
 
     /// worldserver PID file creation
     std::string pidfile = ConfigMgr::GetStringDefault("PidFile", "");
