@@ -82,7 +82,7 @@ void RealmList::UpdateRealms(bool init)
             ACE_INET_Addr localAddr(port, localAddress.c_str(), AF_INET);
             ACE_INET_Addr submask(0, localSubmask.c_str(), AF_INET);
 
-            UpdateRealm(realmId, "TER-Server крови"+ name, externalAddr, localAddr, submask, icon, flag, timezone, (allowedSecurityLevel <= SEC_ADMINISTRATOR ? AccountTypes(allowedSecurityLevel) : SEC_ADMINISTRATOR), pop, build);
+            UpdateRealm(realmId, name, externalAddr, localAddr, submask, icon, flag, timezone, (allowedSecurityLevel <= SEC_ADMINISTRATOR ? AccountTypes(allowedSecurityLevel) : SEC_ADMINISTRATOR), pop, build);
 
             if (init)
                 sLog->outInfo(LOG_FILTER_AUTHSERVER, "Added realm \"%s\" at %s:%u.", name.c_str(), m_realms[name].ExternalAddress.get_host_addr(), port);
