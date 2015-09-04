@@ -1,0 +1,30 @@
+***************
+*** 2673,2678 ****
+      uint32 count = 0;
+      for (MapRefManager::const_iterator itr = m_mapRefManager.begin(); itr != m_mapRefManager.end(); ++itr)
+          if (!itr->GetSource()->IsGameMaster())
+              ++count;
+      return count;
+  }
+--- 2677,2697 ----
+      uint32 count = 0;
+      for (MapRefManager::const_iterator itr = m_mapRefManager.begin(); itr != m_mapRefManager.end(); ++itr)
+          if (!itr->GetSource()->IsGameMaster())
++             //npcbot - count npcbots as group members (event if not in group)
++             if (itr->GetSource()->HaveBot() && BotMgr::LimitBots(this))
++             {
++                 ++count;
++                 BotMap const* botmap = itr->GetSource()->GetBotMgr()->GetBotMap();
++                 for (BotMap::const_iterator itr = botmap->begin(); itr != botmap->end(); ++itr)
++                 {
++                     Creature* cre = itr->second;
++                     if (!cre || !cre->IsInWorld() || cre->FindMap() != this)
++                         continue;
++                     ++count;
++                 }
++             }
++             else
++             //end npcbot
+              ++count;
+      return count;
+  }

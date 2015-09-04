@@ -1,0 +1,80 @@
+***************
+*** 2381,2386 ****
+              if (caster->GetTypeId() == TYPEID_PLAYER && (m_spellInfo->Attributes & SPELL_ATTR0_STOP_ATTACK_TARGET) == 0 &&
+                 (m_spellInfo->DmgClass == SPELL_DAMAGE_CLASS_MELEE || m_spellInfo->DmgClass == SPELL_DAMAGE_CLASS_RANGED))
+                  caster->ToPlayer()->CastItemCombatSpell(unitTarget, m_attackType, procVictim, procEx);
+          }
+  
+  
+--- 2381,2393 ----
+              if (caster->GetTypeId() == TYPEID_PLAYER && (m_spellInfo->Attributes & SPELL_ATTR0_STOP_ATTACK_TARGET) == 0 &&
+                 (m_spellInfo->DmgClass == SPELL_DAMAGE_CLASS_MELEE || m_spellInfo->DmgClass == SPELL_DAMAGE_CLASS_RANGED))
+                  caster->ToPlayer()->CastItemCombatSpell(unitTarget, m_attackType, procVictim, procEx);
++ 
++             //npcbot - CastItemCombatSpell for bots
++             if (caster->GetTypeId() == TYPEID_UNIT &&
++                 caster->ToCreature()->GetBotAI() && !(m_spellInfo->Attributes & SPELL_ATTR0_STOP_ATTACK_TARGET) &&
++                (m_spellInfo->DmgClass == SPELL_DAMAGE_CLASS_MELEE || m_spellInfo->DmgClass == SPELL_DAMAGE_CLASS_RANGED))
++                caster->ToCreature()->CastCreatureItemCombatSpell(unitTarget, m_attackType, procVictim, procEx, this);
++             //end npcbot
+          }
+  
+  
+***************
+*** 3136,3141 ****
+          return;
+      }
+  
+      PrepareTriggersExecutedOnHit();
+  
+      CallScriptOnCastHandlers();
+--- 3143,3153 ----
+          return;
+      }
+  
++     //NpcBot: If we are applying crowd control aura execute caster's delayed attack immediately to prevent instant CC break
++     if (m_targets.GetUnitTarget() && (m_spellInfo->AuraInterruptFlags & AURA_INTERRUPT_FLAG_TAKE_DAMAGE))
++         m_caster->ExecuteDelayedSwingHit();
++     //end NpcBot
++ 
+      PrepareTriggersExecutedOnHit();
+  
+      CallScriptOnCastHandlers();
+***************
+*** 3593,3598 ****
+  
+      // Stop Attack for some spells
+      if (m_spellInfo->Attributes & SPELL_ATTR0_STOP_ATTACK_TARGET)
+          m_caster->AttackStop();
+  }
+  
+--- 3605,3613 ----
+  
+      // Stop Attack for some spells
+      if (m_spellInfo->Attributes & SPELL_ATTR0_STOP_ATTACK_TARGET)
++     //npcbot - disable for npcbots
++     if (!(m_caster->GetTypeId() == TYPEID_UNIT && m_caster->ToCreature()->GetBotAI()))
++     //end npcbot
+          m_caster->AttackStop();
+  }
+  
+***************
+*** 3798,3803 ****
+  
+  void Spell::SendSpellGo()
+  {
+      // not send invisible spell casting
+      if (!IsNeedSendToClient())
+          return;
+--- 3813,3823 ----
+  
+  void Spell::SendSpellGo()
+  {
++     //npcbot - hook for spellcast finish
++     if (m_caster->GetTypeId() == TYPEID_UNIT && m_caster->ToCreature()->GetBotAI())
++         m_caster->ToCreature()->OnSpellGo(this);
++     //end npcbot
++ 
+      // not send invisible spell casting
+      if (!IsNeedSendToClient())
+          return;

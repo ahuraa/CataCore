@@ -1,0 +1,64 @@
+***************
+*** 522,527 ****
+          for (Unit::AuraEffectList::const_iterator i = auras.begin(); i != auras.end(); ++i)
+              AddPct(xp, (*i)->GetAmount());
+  
+          // 4.2.3. Give XP to player.
+          player->GiveXP(xp, _victim, _groupRate);
+          if (Pet* pet = player->GetPet())
+--- 526,542 ----
+          for (Unit::AuraEffectList::const_iterator i = auras.begin(); i != auras.end(); ++i)
+              AddPct(xp, (*i)->GetAmount());
+  
++         //npcbot 4.2.2.1. Apply NpcBot XP reduction
++         if (player->GetNpcBotsCount() > 1)
++         {
++             if (uint8 xp_reduction = BotMgr::GetNpcBotXpReduction())
++             {
++                 uint32 ratePct = std::max<int32>(100 - ((player->GetNpcBotsCount() - 1) * xp_reduction), 10);
++                 xp = xp * ratePct / 100;
++             }
++         }
++         //end npcbot
++ 
+          // 4.2.3. Give XP to player.
+          player->GiveXP(xp, _victim, _groupRate);
+          if (Pet* pet = player->GetPet())
+***************
+*** 873,878 ****
+      m_timeSyncClient = 0;
+      m_timeSyncServer = 0;
+  
+      for (uint8 i = 0; i < MAX_POWERS; ++i)
+          m_powerFraction[i] = 0;
+  
+--- 888,897 ----
+      m_timeSyncClient = 0;
+      m_timeSyncServer = 0;
+  
++     /////////////// Bot System //////////////////
++     _botMgr = NULL;
++     ///////////// End Bot System ////////////////
++ 
+      for (uint8 i = 0; i < MAX_POWERS; ++i)
+          m_powerFraction[i] = 0;
+  
+***************
+*** 7321,7326 ****
+          }
+          else
+          {
+              if (!victim->ToCreature()->IsRacialLeader())
+                  return false;
+  
+--- 7436,7445 ----
+          }
+          else
+          {
++             //npcbot - honor for bots
++             if (!(victim->ToCreature()->GetIAmABot() && victim->ToCreature()->IsFreeBot())) //exclude pets
++             //TODO: honor rate
++             //end npcbot
+              if (!victim->ToCreature()->IsRacialLeader())
+                  return false;
+  
