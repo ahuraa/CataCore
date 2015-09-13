@@ -20,7 +20,7 @@ TER-Server
 #include "ServiceWin32.h"
 char serviceName[] = "TER-Server-W";
 char serviceLongName[] = "TER-Server world";
-char serviceDescription[] = "TER-Server крови";
+char serviceDescription[] = "TER-Server";
 /*
  * -1 - not in service mode
  *  0 - stopped
