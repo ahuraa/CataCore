@@ -115,9 +115,9 @@ int Master::Run()
     sLog->outInfo(LOG_FILTER_WORLDSERVER, "   ****      ******       *******     ");
     sLog->outInfo(LOG_FILTER_WORLDSERVER, "   ****      **           ***   ***");
     sLog->outInfo(LOG_FILTER_WORLDSERVER, "   ****      ******       ***     ***");
-    sLog->outInfo(LOG_FILTER_WORLDSERVER, "   ----      *******      ****    ***");
-    sLog->outInfo(LOG_FILTER_WORLDSERVER, "                       TER884 C O R E   ");
-    sLog->outInfo(LOG_FILTER_WORLDSERVER, "TER-Server                    ");
+    sLog->outInfo(LOG_FILTER_WORLDSERVER, "   ****      *******      ****    ***");
+
+    sLog->outInfo(LOG_FILTER_WORLDSERVER, "TER-Server 2015                   ");
 
     /// worldserver PID file creation
     std::string pidfile = ConfigMgr::GetStringDefault("PidFile", "");
