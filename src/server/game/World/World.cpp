@@ -405,7 +405,7 @@ void World::LoadConfigSettings(bool reload)
 	else
 		SetPlayerAmountLimit(ConfigMgr::GetIntDefault("TER-Server_player_max(0x9b673)", 1));
 
-    SetMotd(ConfigMgr::GetStringDefault("Server", "TER-Server крови"));
+    SetMotd(ConfigMgr::GetStringDefault("Motd", "Welcome to World of Warcraft Cataclysm"));
 
     ///- Read ticket system setting from the config file
     m_bool_configs[CONFIG_ALLOW_TICKETS] = ConfigMgr::GetBoolDefault("AllowTickets", true);
